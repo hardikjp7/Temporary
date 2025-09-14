@@ -23,12 +23,11 @@ def get_bigrams_and_collocations(text, input_word):
             tokenizedwordsbigrams.append([prev_word, word])
         prev_word = word
     collocationWords = Counter(tuple(b) for b in tokenizedwordsbigrams)
-    top_collocations = collocationWords.most_common(3)
+
+    filtered_collocations = [" ".join(words) for words, count in collocationWords.items() if count >= 2]
 
     top_three = sorted(cfd_bigrams.items(), key=lambda x: x[1], reverse=True)[:3]
 
-    collocationWords = [" ".join(words) for words, count in top_collocations]
+    #collocationWords = [" ".join(words) for words, count in filtered_collocations]
 
-    return top_three, top_collocations
- 
-1st wala
+    return top_three, filtered_collocations
