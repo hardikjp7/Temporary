@@ -1,0 +1,21 @@
+SELECT * FROM food
+WHERE customer_id IS NOT NULL 
+AND gender IS NOT NULL 
+AND age IS NOT NULL
+AND city IS NOT NULL
+AND signup_date IS NOT NULL
+AND order_id IS NOT NULL
+AND order_date IS NOT NULL
+AND restaurant_name IS NOT NULL
+AND dish_name IS NOT NULL
+AND category IS NOT NULL
+AND quantity IS NOT NULL
+AND price IS NOT NULL
+AND payment_method IS NOT NULL
+AND order_frequency IS NOT NULL
+AND last_order_date IS NOT NULL
+AND loyalty_points IS NOT NULL
+AND churned IS NOT NULL
+AND rating IS NOT NULL
+AND rating_date IS NOT NULL
+AND delivery_status IS NOT NULL
