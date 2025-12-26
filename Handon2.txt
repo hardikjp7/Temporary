@@ -1,0 +1,89 @@
+Minikube installation
+
+below is code:
+
+sudo apt install docker.io -y 
+sudo systemctl unmask docker
+sudo service docker restart
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+sudo dpkg -i minikube_latest_amd64.deb
+rm -rf minikube_latest_amd64.deb
+Follow the steps to complete the handson
+
+````
+
+
+1. Start Cluster : Launch the minikube cluster with the command 'minikube start'
+
+Hands-on scenario Contd...
+2. Use the following yaml to deploy 'iris-classifier-site' to the cluster.
+
+below is code:
+
+echo "apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iris-classifier-site
+  labels:
+      app: web
+spec:
+  replicas : 1
+  selector :
+    matchLabels:
+       app : iris-classifier
+  template :
+    metadata :
+        labels : { app : iris-classifier }
+    spec:
+      containers:
+        - name: mlexample
+          image: gpcplay/playimages:mlexample
+          ports:
+              - containerPort: 5000">iris-classifier-deployment.yaml
+
+`````
+Hint: Use kubectl on the 'iris-classifier-deployment.yaml' file and wait till the pods are created.
+
+
+Hands-on scenario Contd...
+3. Create a Service for App Use the following yaml to expose port 30800 outside the cluster. This service will be used by the iris-classifier-site app.
+
+below is code:
+
+echo "apiVersion: v1
+kind: Service
+metadata:
+    name: iris-classifier-svc
+spec:
+  selector:
+    app: iris-classifier
+  type: NodePort
+  ports:
+    - port: 5000
+      nodePort : 30800
+      targetPort: 5000">iris-classifier-service.yaml
+
+```````
+
+Hint: Use kubectl on the 'iris-classifier-service.yaml' file.
+
+
+Hands-on scenario Contd...
+4. Verify if the application is running with the command 'kubectl get pods'
+
+List the service in the current cluster with the command 'kubectl get services'
+
+Create an environment variable 'NODE_PORT' by using the following expression:
+
+below is code:
+
+export NODE_PORT=$(kubectl get services/iris-classifier-svc -o go-template='{{(index .spec.ports 0).nodePort}}')
+
+echo NODE_PORT=$NODE_PORT
+``````
+
+Test if the app is exposed outside the cluster by using curl:
+
+below is code:
+
+curl "http://$(minikube ip):$NODE_PORT/classify/?sl=5.1&sw=3.5&pl=1.4&pw=0.3"
