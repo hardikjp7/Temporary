@@ -1,0 +1,50 @@
+Hands-on Scenario
+Installation
+
+Install the prerequisites for the challenge:
+
+below is code:
+
+sudo apt install python3-pip --fix-missing -y
+pip3 install requests
+
+
+Instructions
+
+Create a folder called docker-ml-scenario and do the following
+
+Write a flask app to deploy a ML model in app.py.
+
+Write the packages required to be installed in requirements.txt.
+
+Create a Dockerfile
+
+Create a Dockerfile using the following contents in the docker-ml-scenario folder.
+
+below is code:
+
+FROM python:3.7
+WORKDIR /code
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+EXPOSE 5000
+COPY . .
+CMD ["flask", "run"]
+
+
+
+page2
+Hands-on Scenario contd.
+Build a Docker Image
+
+Build a docker image named 'ml_example' by using the docker build command:
+
+docker build -t ml_example .
+
+Run the Docker Image
+
+Run the docker image by using the following command:
+
+docker run -d -p 5000:5000 --name ml_example_container ml_example
